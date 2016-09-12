@@ -1,0 +1,188 @@
+
+
+select * from TS_TEST_102 WHERE id = 1 and time > 1472361000000 and time < 1472364100000;
++--+--------------------+--------------------------+
+|id|        time        |          value           |
++--+--------------------+--------------------------+
+|1 |2016-08-28T06:00:00Z|1.00000000000000000000e+02|
+|1 |2016-08-28T06:00:10Z|1.01000000000000000000e+02|
+|1 |2016-08-28T06:00:20Z|1.04000000000000000000e+02|
+|1 |2016-08-28T06:00:30Z|1.02000000000000000000e+02|
+|1 |2016-08-28T06:00:40Z|9.00000000000000000000e+01|
+|1 |2016-08-28T06:00:50Z|9.60000000000000000000e+01|
+|1 |2016-08-28T06:01:00Z|9.90000000000000000000e+01|
++--+--------------------+--------------------------+
+
+
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364070000, 101.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364070000, 101);
+
+DESCRIBE TS_TEST_102;
++------+---------+-------+-----------+---------+--------+----+
+|Column|  Type   |Is Null|Primary Key|Local Key|Interval|Unit|
++------+---------+-------+-----------+---------+--------+----+
+|  id  | sint64  | false |     1     |    1    |        |    |
+| time |timestamp| false |     2     |    2    |   15   | m  |
+|value | double  | true  |           |         |        |    |
++------+---------+-------+-----------+---------+--------+----+
+
+create table TS_TEST_102 (id SINT64 NOT NULL, time TIMESTAMP NOT NULL, value DOUBLE, PRIMARY KEY ((id, QUANTUM(time, 15, 'm')), id, time));
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364010000, 101);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364010000, 101.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364020000, 104.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364030000, 102.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364040000, 90.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364050000, 96.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364060000, 99.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, 1472364070000, 101.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, '2016-08-28 06:01:20', 103.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, '2016-08-28T06:01:30Z', 105.0);
+INSERT INTO TS_TEST_102 (id, time, value) VALUES (1, '2016-08-28 06:01:40', 102.0);
+
+
+describe TS_TEST_102;
++------+---------+-------+-----------+---------+--------+----+
+|Column|  Type   |Is Null|Primary Key|Local Key|Interval|Unit|
++------+---------+-------+-----------+---------+--------+----+
+|  id  | sint64  | false |     1     |    1    |        |    |
+| time |timestamp| false |     2     |    2    |   15   | m  |
+|value | double  | true  |           |         |        |    |
++------+---------+-------+-----------+---------+--------+----+
+
+select * from TS_TEST_102 WHERE id = 1 and time > 1472361000000 and time < 1472364200000;
++--+--------------------+--------------------------+
+|id|        time        |          value           |
++--+--------------------+--------------------------+
+|1 |2016-08-28T06:00:00Z|1.00000000000000000000e+02|
+|1 |2016-08-28T06:00:10Z|1.01000000000000000000e+02|
+|1 |2016-08-28T06:00:20Z|1.04000000000000000000e+02|
+|1 |2016-08-28T06:00:30Z|1.02000000000000000000e+02|
+|1 |2016-08-28T06:00:40Z|9.00000000000000000000e+01|
+|1 |2016-08-28T06:00:50Z|9.60000000000000000000e+01|
+|1 |2016-08-28T06:01:00Z|9.90000000000000000000e+01|
+|1 |2016-08-28T06:01:10Z|1.01000000000000000000e+02|
+|1 |2016-08-28T06:01:20Z|1.03000000000000000000e+02|
+|1 |2016-08-28T06:01:30Z|1.05000000000000000000e+02|
+|1 |2016-08-28T06:01:40Z|1.02000000000000000000e+02|
++--+--------------------+--------------------------+
+
+
+
+
++--+--------------------+--------------------------+
+|id|        time        |          value           |
++--+--------------------+--------------------------+
+|1 |2016-08-28T06:00:50Z|                 1234.0000|
+|1 |2016-08-28T06:01:00Z|                   99.0000|
+|1 |2016-08-28T06:01:10Z|                  101.0000|
++--+--------------------+--------------------------+
+
+
+
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:10');
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:10', null);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:10', NULL);
+insert into TS_TEST_102 (id, time, value) values (2, '2016-08-28 06:00:10', NULL);
+insert into TS_TEST_102 (id, time) values (2, '2016-08-28 06:00:10', 101.0);
+
+
++--+--------------------+--------------------------+
+|id|        time        |          value           |
++--+--------------------+--------------------------+
+|1 |2016-08-28T06:00:10Z|1.01000000000000000000e+02|
+|1 |2016-08-28T06:00:20Z|1.04000000000000000000e+02|
+|1 |2016-08-28T06:00:30Z|1.02000000000000000000e+02|
+|1 |2016-08-28T06:00:31Z|5.60000000000000000000e+01|
+|1 |2016-08-28T06:00:32Z|5.80000000000000000000e+01|
+|1 |2016-08-28T06:00:33Z|5.82000000000000028422e+01|
+|1 |2016-08-28T06:00:34Z|5.82000000000000028422e+01|
+|1 |2016-08-28T06:00:40Z|9.00000000000000000000e+01|
+|1 |2016-08-28T06:00:50Z|1.23400000000000000000e+03|
+|1 |2016-08-28T06:01:00Z|9.90000000000000000000e+01|
+|1 |2016-08-28T06:01:10Z|1.01000000000000000000e+02|
+|1 |2016-08-28T06:01:20Z|1.03000000000000000000e+02|
+|1 |2016-08-28T06:01:30Z|1.05000000000000000000e+02|
+|1 |2016-08-28T06:01:40Z|1.02000000000000000000e+02|
+|1 |2016-08-28T06:01:50Z|1.09000000000000000000e+02|
+|1 |2016-08-28T06:01:55Z|8.90000000000000000000e+01|
+|1 |2016-08-28T06:01:56Z|8.20000000000000000000e+01|
+|1 |2016-08-28T06:10:00Z|2.30000000000000000000e+01|
+|1 |2016-08-28T06:10:01Z|1.00000000000000000000e+00|
++--+--------------------+--------------------------+
+
+
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:01', 34.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:02', 37.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:03', 39.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:04', 98.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:05', 93.1);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:06', 91.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:08', 99.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:01:08', 23.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:01:00', 35.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:10', 39.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:11', 49.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:12', 51.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:13', 54.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:15', 59.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:16', 79.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:17', 29.0);
+insert into TS_TEST_102 values (2, '2016-08-28 06:00:18', 54.0);
+
+select * from TS_TEST_102 where id = 2 AND time > '2016-08-28 06:00:00' AND time < '2016-08-28 06:20:00';
+
+
+|2 |2016-08-28 06:00:01 |3.40000000000000000000e+01|
+|2 |2016-08-28 06:00:02 |3.70000000000000000000e+01|
+|2 |2016-08-28 06:00:03 |3.90000000000000000000e+01|
+|2 |2016-08-28 06:00:04 |9.80000000000000000000e+01|
+|2 |2016-08-28 06:00:05 |9.30999999999999943157e+01|
+|2 |2016-08-28 06:00:06 |9.10000000000000000000e+01|
+|2 |2016-08-28 06:00:08 |9.90000000000000000000e+01|
+|2 |2016-08-28 06:00:10 |3.90000000000000000000e+01|
+|2 |2016-08-28 06:00:11 |4.90000000000000000000e+01|
+|2 |2016-08-28 06:00:12 |5.10000000000000000000e+01|
+|2 |2016-08-28 06:00:13 |5.40000000000000000000e+01|
+|2 |2016-08-28 06:00:15 |5.90000000000000000000e+01|
+|2 |2016-08-28 06:00:16 |7.90000000000000000000e+01|
+|2 |2016-08-28 06:00:17 |2.90000000000000000000e+01|
+|2 |2016-08-28 06:00:18 |5.40000000000000000000e+01|
+|2 |2016-08-28 06:01:00 |3.50000000000000000000e+01|
+|2 |2016-08-28 06:01:08 |2.30000000000000000000e+01|
+
+
+sudo riak-admin bucket-type list
+sudo riak-admin bucket-type activate TS_TABLE_102
+sudo riak-admin bucket-type activate TS_TEST_102
+curl -i http://localhost:8098/buckets?buckets=true
+curl -i http://localhost:8098/buckets?buckets=false
+curl -i http://localhost:8098/buckets
+curl -i http://localhost:8098/buckets?buckets=true
+curl -i http://localhost:8098/buckets/ts_test_101/keys?keys=true
+curl -i http://localhost:8098/buckets/ts_keys=true
+curl -i http://localhost:8098/buckets?buckets=true
+curl -i http://localhost:8098/buckets/__riak_client_test__/keys?keys=true
+curl -i http://localhost:8098/buckets/default/keys?keys=true
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/keys/id/1/time/14723641160000
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/keys/id/1/time/1472364116000
+sudo riak-admin status | grep node_gets
+curl -XPOST http://127.0.0.1:8098/ts/v1/query --data "select *  from TS_TEST_102 where id = 2 AND time > '2016-08-28 06:00:00' AND time < '2016-08-28 07:00:00'"
+sudo riak-admin status | grep node_gets
+sudo riak-admin status | grep write_once
+curl -XPOST http://127.0.0.1:8098/ts/v1/query --data "select *  from TS_TEST_102 where id = 2 AND time > '2016-08-28 06:00:00' AND time < '2016-08-28 07:00:00'"
+sudo riak-admin status | grep write_once
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys
+curl -XPOST http://127.0.0.1:8098/ts/v1/query --data "select *  from TS_TEST_102 where id = 1 AND time > '2016-08-28 06:00:00' AND time < '2016-08-28 07:00:00'"
+sudo riak-admin status | grep node
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys
+sudo riak-admin status | grep write_on
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys
+history keys
+history | grep keys
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys
+curl -XPOST http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/keys --data '[{"id":3,"time":1472364600000, "value":1.0}, {"id":3,"time":1472364610000, "value":1.0}]'
+curl -XPOST http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/keys --data '[{"id":3,"time":1472364620000, "value":3.0}, {"id":3,"time":1472364690000, "value":2.0}]'
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/list_keys | grep 3/
+
+curl -XGET http://127.0.0.1:8098/ts/v1/tables/TS_TEST_102/keys/id/1/time/1472364116000 | json_pp
